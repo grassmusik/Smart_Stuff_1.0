@@ -49,22 +49,69 @@
 #include <stdint.h>
 #include <string.h>
 #include "mxc_config.h"
+#include "mxc_sys.h"
+#include "max3263x.h"
+#include "gpio.h"
+#include "lp.h"
+#include "board.h"
 #include "clkman.h"
 #include "ioman.h"
 #include "spim.h"
 #include "mx25.h"
 
+
 /***** Definitions *****/
-#define MX25_BAUD           48000000    // 48 MHz maximum, 20 kHz minimum
+#define SPI_BAUD           48000000    // 48 MHz maximum, 20 kHz minimum
 #define MX25_ADDR           0x0
 #define MX25_SPIM_WIDTH     SPIM_WIDTH_4
 #define MX25_EXP_ID         0xc22538
 
 #define BUFF_SIZE           512
+#define _port 3
+#define _pin  8
 
 /***** Globals *****/
+unsigned int gpio_port_assign[]={0,1,2};
+unsigned int gpio_pin_assign[]={PIN_0, PIN_1, PIN_2, PIN_3, PIN_4, PIN_5, PIN_6, PIN_7,};
+unsigned int gpio_masters[gpio_port_assign][gpio_pin_assign];
 
 /***** Functions *****/
+void gpio_Init(void)
+{
+	for(int i=0; i<gpio_port_assign; i++)
+	{
+		for(int j=0; j<gpio_pin_assign; j++)
+			gpio_cfg_t gpio_masters[i][j];
+	}
+
+	for(int i=0; i<gpio_port_assign; i++)
+	{
+		for(int j=0; j<gpio_pin_assign; j++)
+			{
+			gpio_masters[i][j].port=gpio_port_assign[i];
+			gpio_masters[i][j].mask=gpio_pin_assign[j];
+			gpio_masters[i][j].func=GPIO_FUNC_GPIO;
+			gpio_masters[i][j].pad=GPIO_PAD_INPUT_PULLUP;
+			GPIO_Config(&gpio_masters[i][j]);
+			}
+	}
+}
+
+void pause(void)
+{
+	for(unsigned int i=0; i<5000000; i++)
+		{
+		_NOP();
+		}
+}
+
+/******************************************************************************/
+void Setup()
+{
+	LP_EnterLP3();
+	gpio_Init();
+
+}
 
 /******************************************************************************/
 int main(void)
@@ -72,14 +119,6 @@ int main(void)
     int error, i;
     uint8_t txdata[BUFF_SIZE];
     uint8_t rxdata[BUFF_SIZE];
-
-    printf("\n\n***** SPIM MX25 Example *****\n");
-
-    printf(" System freq \t: %d Hz\n", SystemCoreClock);
-    printf(" MX25 freq \t: %d Hz\n", MX25_BAUD);
-    printf(" MX25 ID \t: 0x%x\n", MX25_EXP_ID);
-    printf(" SPI data width : %d bits\n", (0x1 << MX25_SPIM_WIDTH));
-    printf(" Write/Verify   : %d bytes\n\n", BUFF_SIZE);
 
     // Initialize the data buffers
     for(i = 0; i < BUFF_SIZE; i++) {
@@ -91,12 +130,12 @@ int main(void)
     spim_cfg_t cfg;
     cfg.mode = 0;
     cfg.ssel_pol = 0;
-    cfg.baud = MX25_BAUD;
+    cfg.baud = SPI_BAUD;
 
     sys_cfg_spim_t sys_cfg;
 
-    // MX25 IO Config                  core I/O, ss0, ss1, ss2, quad, fast I/O
-    sys_cfg.io_cfg = (ioman_cfg_t)IOMAN_SPIM1(1,   1,  0,    0,    1,        1);
+    // SPIM IO Config                  core I/O, ss0, ss1, ss2, ss3, ss4, quad, fast I/O
+    sys_cfg.io_cfg = (ioman_cfg_t)IOMAN_SPIM0(1, 1, 1, 1, 1, 1, 0, 1);
     sys_cfg.clk_scale = CLKMAN_SCALE_AUTO;
 
     if((error = SPIM_Init(MXC_SPIM1, &cfg, &sys_cfg)) != E_NO_ERROR) {
