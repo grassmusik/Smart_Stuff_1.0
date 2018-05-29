@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<exampleInfo>
+<!-- Board Support Package -->
+  <copyDir>..\..\..\..\Libraries\Boards</copyDir>
+
+<!-- CMSIS Device Files including Startup -->
+  <copyDir>..\..\..\..\Libraries\CMSIS\Device\Maxim\MAX3263X\Include</copyDir>
+  <copyDir>..\..\..\..\Libraries\CMSIS\Device\Maxim\MAX3263X\Source</copyDir>
+  <copyDir>..\..\..\..\LibrariesLibraries\CMSIS\Device\Maxim\MAX3263X\Source</copyDir>
+
+<!-- Hardware Access Layer Library -->
+  <copyDir>..\..\..\..\Libraries\MAX3263XPeriphDriver</copyDir>
+
+</exampleInfo>
+
