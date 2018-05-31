@@ -58,8 +58,6 @@
 #include "ioman.h"
 #include "spim.h"
 #include "mx25.h"
-#include "StartUp.h"
-
 
 /***** Definitions *****/
 #define SPIM0A_PORT_0	PORT_0
@@ -102,7 +100,6 @@
 #define _pin  				8
 
 /***** Globals *****/
-
 gpio_cfg_t 	SPIM0A_0_0,
 			SPIM0A_0_1,
 			SPIM0A_0_2,
@@ -130,18 +127,165 @@ gpio_cfg_t 	SPIM0A_0_0,
 
 /***** Functions *****/
 void pause(void)
+	{ for(unsigned int i=0; i<5000000; i++)
+			{
+			_NOP();
+			}
+	}
+
+/******************************************************************************/
+void gpio_Init(void)
 {
-	for(unsigned int i=0; i<5000000; i++)
-		{
-		_NOP();
-		}
+		SPIM0A_0_0.port = SPIM0A_PORT_0;
+		SPIM0A_0_0.mask = SPIM0A_PIN_0;
+		SPIM0A_0_0.func = GPIO_FUNC_GPIO;
+		SPIM0A_0_0.pad = GPIO_PAD_INPUT_PULLUP;
+	    GPIO_Config(&SPIM0A_0_0);
+
+	    SPIM0A_0_1.port = SPIM0A_PORT_0;
+		SPIM0A_0_1.mask = SPIM0A_PIN_1;
+		SPIM0A_0_1.func = GPIO_FUNC_GPIO;
+		SPIM0A_0_1.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM0A_0_1);
+
+		SPIM0A_0_2.port = SPIM0A_PORT_0;
+		SPIM0A_0_2.mask = SPIM0A_PIN_2;
+		SPIM0A_0_2.func = GPIO_FUNC_GPIO;
+		SPIM0A_0_2.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM0A_0_2);
+
+		SPIM0A_0_3.port = SPIM0A_PORT_0;
+		SPIM0A_0_3.mask = SPIM0A_PIN_3;
+		SPIM0A_0_3.func = GPIO_FUNC_GPIO;
+		SPIM0A_0_3.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM0A_0_3);
+
+		SPIM0A_0_4.port = SPIM0A_PORT_0;
+		SPIM0A_0_4.mask = SPIM0A_PIN_4;
+		SPIM0A_0_4.func = GPIO_FUNC_GPIO;
+		SPIM0A_0_4.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM0A_0_4);
+
+		SPIM0A_0_5.port = SPIM0A_PORT_0;
+		SPIM0A_0_5.mask = SPIM0A_PIN_5;
+		SPIM0A_0_5.func = GPIO_FUNC_GPIO;
+		SPIM0A_0_5.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM0A_0_5);
+
+		SPIM0A_0_6.port = SPIM0A_PORT_0;
+		SPIM0A_0_6.mask = SPIM0A_PIN_6;
+		SPIM0A_0_6.func = GPIO_FUNC_GPIO;
+		SPIM0A_0_6.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM0A_0_6);
+
+		SPIM0A_0_7.port = SPIM0A_PORT_0;
+		SPIM0A_0_7.mask = SPIM0A_PIN_7;
+		SPIM0A_0_7.func = GPIO_FUNC_GPIO;
+		SPIM0A_0_7.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM0A_0_7);
+
+		SPIM2A_1_0.port = SPIM2A_PORT_1;
+		SPIM2A_1_0.mask = SPIM2A_PIN_0;
+		SPIM2A_1_0.func = GPIO_FUNC_GPIO;
+		SPIM2A_1_0.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM2A_1_0);
+
+		SPIM2A_1_1.port = SPIM2A_PORT_1;
+		SPIM2A_1_1.mask = SPIM2A_PIN_1;
+		SPIM2A_1_1.func = GPIO_FUNC_GPIO;
+		SPIM2A_1_1.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM2A_1_1);
+
+		SPIM2A_1_2.port = SPIM2A_PORT_1;
+		SPIM2A_1_2.mask = SPIM2A_PIN_2;
+		SPIM2A_1_2.func = GPIO_FUNC_GPIO;
+		SPIM2A_1_2.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM2A_1_2);
+
+		SPIM2A_1_3.port = SPIM2A_PORT_1;
+		SPIM2A_1_3.mask = SPIM2A_PIN_3;
+		SPIM2A_1_3.func = GPIO_FUNC_GPIO;
+		SPIM2A_1_3.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM2A_1_3);
+
+		SPIM2A_1_4.port = SPIM2A_PORT_1;
+		SPIM2A_1_4.mask = SPIM2A_PIN_4;
+		SPIM2A_1_4.func = GPIO_FUNC_GPIO;
+		SPIM2A_1_4.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM2A_1_4);
+
+		SPIM2A_1_5.port = SPIM2A_PORT_1;
+		SPIM2A_1_5.mask = SPIM2A_PIN_5;
+		SPIM2A_1_5.func = GPIO_FUNC_GPIO;
+		SPIM2A_1_5.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM2A_1_5);
+
+		SPIM2A_1_6.port = SPIM2A_PORT_1;
+		SPIM2A_1_6.mask = SPIM2A_PIN_6;
+		SPIM2A_1_6.func = GPIO_FUNC_GPIO;
+		SPIM2A_1_6.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM2A_1_6);
+
+		SPIM2A_1_7.port = SPIM2A_PORT_1;
+		SPIM2A_1_7.mask = SPIM2A_PIN_7;
+		SPIM2A_1_7.func = GPIO_FUNC_GPIO;
+		SPIM2A_1_7.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM2A_1_7);
+
+		SPIM2C_2_0.port = SPIM2C_PORT_2;
+		SPIM2C_2_0.mask = SPIM2C_PIN_0;
+		SPIM2C_2_0.func = GPIO_FUNC_GPIO;
+		SPIM2C_2_0.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM2C_2_0);
+
+		SPIM2C_2_1.port = SPIM2C_PORT_2;
+		SPIM2C_2_1.mask = SPIM2C_PIN_1;
+		SPIM2C_2_1.func = GPIO_FUNC_GPIO;
+		SPIM2C_2_1.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM2C_2_1);
+
+		SPIM2C_2_2.port = SPIM2C_PORT_2;
+		SPIM2C_2_2.mask = SPIM2C_PIN_2;
+		SPIM2C_2_2.func = GPIO_FUNC_GPIO;
+		SPIM2C_2_2.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM2C_2_2);
+
+		SPIM2C_2_3.port = SPIM2C_PORT_2;
+		SPIM2C_2_3.mask = SPIM2C_PIN_3;
+		SPIM2C_2_3.func = GPIO_FUNC_GPIO;
+		SPIM2C_2_3.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM2C_2_3);
+
+		SPIM2C_2_4.port = SPIM2C_PORT_2;
+		SPIM2C_2_4.mask = SPIM2C_PIN_4;
+		SPIM2C_2_4.func = GPIO_FUNC_GPIO;
+		SPIM2C_2_4.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM2C_2_4);
+
+		SPIM2C_2_5.port = SPIM2C_PORT_2;
+		SPIM2C_2_5.mask = SPIM2C_PIN_5;
+		SPIM2C_2_5.func = GPIO_FUNC_GPIO;
+		SPIM2C_2_5.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM2C_2_5);
+
+		SPIM2C_2_6.port = SPIM2C_PORT_2;
+		SPIM2C_2_6.mask = SPIM2C_PIN_6;
+		SPIM2C_2_6.func = GPIO_FUNC_GPIO;
+		SPIM2C_2_6.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM2C_2_6);
+
+		SPIM2C_2_7.port = SPIM2C_PORT_2;
+		SPIM2C_2_7.mask = SPIM2C_PIN_7;
+		SPIM2C_2_7.func = GPIO_FUNC_GPIO;
+		SPIM2C_2_7.pad = GPIO_PAD_INPUT_PULLUP;
+		GPIO_Config(&SPIM2C_2_7);
 }
 
 /******************************************************************************/
-int Setup(error)
+void Setup()
 {
-	LP_EnterLP3();
-	gpio_Init();
+	int error;
+    gpio_Init();
 
 	// Initialize the SPIM0A
 	    spim_cfg_t SPIM0A;
@@ -171,95 +315,105 @@ int Setup(error)
 	    sys_SPIM0A_cfg.io_cfg = (ioman_cfg_t)IOMAN_SPIM0(1, 1, 1, 1, 1, 1, 0, 1);
 	    sys_SPIM0A_cfg.clk_scale = CLKMAN_SCALE_AUTO;
 
-		if((error = SPIM_Init(MXC_SPIM1, &SPIM0A, &sys_SPIM0A_cfg)) != E_NO_ERROR) {
+		if((error = SPIM_Init(MXC_SPIM1, &SPIM0A, &sys_SPIM0A_cfg)) != E_NO_ERROR)
+			{
 			printf("Error initializing SPIM %d\n", error);
 			while(1) {}
-		} else {
-			printf("SPIM0A Initialized\n");
-		}
+			} else
+				{
+				printf("SPIM0A Initialized\n");
+				}
 
 	// SPIM2A IO Config                  core I/O, ss0, ss1, ss2, ss3, ss4, quad, fast I/O
 		sys_SPIM2A_cfg.io_cfg = (ioman_cfg_t)IOMAN_SPIM0(1, 1, 1, 1, 1, 1, 0, 1);
 		sys_SPIM2A_cfg.clk_scale = CLKMAN_SCALE_AUTO;
 
-		if((error = SPIM_Init(MXC_SPIM1, &SPIM2A, &sys_SPIM2A_cfg)) != E_NO_ERROR) {
+		if((error = SPIM_Init(MXC_SPIM1, &SPIM2A, &sys_SPIM2A_cfg)) != E_NO_ERROR)
+			{
 			printf("Error initializing SPIM %d\n", error);
 			while(1) {}
-		} else {
-			printf("SPIM2A Initialized\n");
-		}
+			} else
+				{
+				printf("SPIM2A Initialized\n");
+				}
 
 	// SPIM2C IO Config                  core I/O, ss0, ss1, ss2, ss3, ss4, quad, fast I/O
 		sys_SPIM2C_cfg.io_cfg = (ioman_cfg_t)IOMAN_SPIM0(1, 1, 1, 1, 1, 1, 0, 1);
 		sys_SPIM2C_cfg.clk_scale = CLKMAN_SCALE_AUTO;
 
-		if((error = SPIM_Init(MXC_SPIM1, &SPIM2C, &sys_SPIM2C_cfg)) != E_NO_ERROR) {
+		if((error = SPIM_Init(MXC_SPIM1, &SPIM2C, &sys_SPIM2C_cfg)) != E_NO_ERROR)
+			{
 			printf("Error initializing SPIM %d\n", error);
 			while(1) {}
-		} else {
-			printf("SPIM2C Initialized\n");
-		}
+			} else
+				{
+				printf("SPIM2C Initialized\n");
+				}
 
 }
 
 /******************************************************************************/
 int main(void)
 {
-    int error, i;
+    int error;
+    gpio_Init();
+    Setup();
+
     uint8_t txdata[BUFF_SIZE];
     uint8_t rxdata[BUFF_SIZE];
 
     // Initialize the data buffers
-    for(i = 0; i < BUFF_SIZE; i++) {
+    for(int i = 0; i < BUFF_SIZE; i++)
+    	{
         txdata[i] = i;
-    }
+    	}
     memset(rxdata, 0x0, BUFF_SIZE);
 
-
-
-
-
-
-
     // Initialize the MX25
-    MX25_init(MXC_SPIM1, 0);
-    MX25_reset();
-    printf("MX25 Initialized\n");
+		MX25_init(MXC_SPIM1, 0);
+		MX25_reset();
+		printf("MX25 Initialized\n");
 
     // Get the ID of the MX25
-    uint32_t id = MX25_ID();
-    if(id != MX25_EXP_ID) {
-        printf("Error verifying MX25 ID: 0x%x\n", id);
-        while(1) {}
-    } else {
-        printf("MX25 ID verified\n");
-    }
+		uint32_t id = MX25_ID();
+		if(id != MX25_EXP_ID)
+			{
+			printf("Error verifying MX25 ID: 0x%x\n", id);
+			while(1) {}
+			} else
+				{
+				printf("MX25 ID verified\n");
+				}
 
     // Erase the test sector
-    MX25_erase(MX25_ADDR, MX25_ERASE_4K);
+    	MX25_erase(MX25_ADDR, MX25_ERASE_4K);
 
     // Enable Quad mode if we're using quad
-    if(MX25_SPIM_WIDTH == SPIM_WIDTH_4) {
-        if(MX25_quad(1) != E_NO_ERROR) {
-            printf("Error enabling quad mode\n");
-        }
-    } else {
-        if(MX25_quad(0) != E_NO_ERROR) {
-            printf("Error disabling quad mode\n");
-        }
-    }
+		if(MX25_SPIM_WIDTH == SPIM_WIDTH_4)
+			{ if(MX25_quad(1) != E_NO_ERROR)
+				{
+				printf("Error enabling quad mode\n");
+				}
+			} else
+				{ if(MX25_quad(0) != E_NO_ERROR)
+					{
+					printf("Error disabling quad mode\n");
+					}
+				}
 
     // Program the MX25
-    MX25_program_page(MX25_ADDR, txdata, BUFF_SIZE, MX25_SPIM_WIDTH);
+		MX25_program_page(MX25_ADDR, txdata, BUFF_SIZE, MX25_SPIM_WIDTH);
 
     // Read back the memory
-    MX25_read(MX25_ADDR, rxdata, BUFF_SIZE, MX25_SPIM_WIDTH);
+		MX25_read(MX25_ADDR, rxdata, BUFF_SIZE, MX25_SPIM_WIDTH);
 
-    if((error = memcmp(rxdata, txdata, BUFF_SIZE)) != 0) {
-        printf("Error verifying MX25 memory %d\n", error);
-    } else {
-        printf("MX25 memory verified\n");
-    }
+		if((error = memcmp(rxdata, txdata, BUFF_SIZE)) != 0)
+			{
+			printf("Error verifying MX25 memory %d\n", error);
+			} else
+				{
+				printf("MX25 memory verified\n");
+				}
 
-    while(1) {}
+		while(1) {}
 }
