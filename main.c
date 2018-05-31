@@ -58,45 +58,77 @@
 #include "ioman.h"
 #include "spim.h"
 #include "mx25.h"
+#include "StartUp.h"
 
 
 /***** Definitions *****/
-#define SPI_BAUD           48000000    // 48 MHz maximum, 20 kHz minimum
+#define SPIM0A_PORT_0	PORT_0
+#define SPIM0A_PIN_0	PIN_0
+#define SPIM0A_PIN_1	PIN_1
+#define SPIM0A_PIN_2	PIN_2
+#define SPIM0A_PIN_3	PIN_3
+#define SPIM0A_PIN_4	PIN_4
+#define SPIM0A_PIN_5	PIN_5
+#define SPIM0A_PIN_6	PIN_6
+#define SPIM0A_PIN_7	PIN_7
+
+#define SPIM2A_PORT_1	PORT_1
+#define SPIM2A_PIN_0	PIN_0
+#define SPIM2A_PIN_1	PIN_1
+#define SPIM2A_PIN_2	PIN_2
+#define SPIM2A_PIN_3	PIN_3
+#define SPIM2A_PIN_4	PIN_4
+#define SPIM2A_PIN_5	PIN_5
+#define SPIM2A_PIN_6	PIN_6
+#define SPIM2A_PIN_7	PIN_7
+
+#define SPIM2C_PORT_2	PORT_2
+#define SPIM2C_PIN_0	PIN_0
+#define SPIM2C_PIN_1	PIN_1
+#define SPIM2C_PIN_2	PIN_2
+#define SPIM2C_PIN_3	PIN_3
+#define SPIM2C_PIN_4	PIN_4
+#define SPIM2C_PIN_5	PIN_5
+#define SPIM2C_PIN_6	PIN_6
+#define SPIM2C_PIN_7	PIN_7
+
+#define SPI_BAUD           	48000000    // 48 MHz maximum, 20 kHz minimum
 #define MX25_ADDR           0x0
 #define MX25_SPIM_WIDTH     SPIM_WIDTH_4
 #define MX25_EXP_ID         0xc22538
 
 #define BUFF_SIZE           512
-#define _port 3
-#define _pin  8
+#define _port 				3
+#define _pin  				8
 
 /***** Globals *****/
-unsigned int gpio_port_assign[]={0,1,2};
-unsigned int gpio_pin_assign[]={PIN_0, PIN_1, PIN_2, PIN_3, PIN_4, PIN_5, PIN_6, PIN_7,};
-unsigned int gpio_masters[gpio_port_assign][gpio_pin_assign];
+
+gpio_cfg_t 	SPIM0A_0_0,
+			SPIM0A_0_1,
+			SPIM0A_0_2,
+			SPIM0A_0_3,
+			SPIM0A_0_4,
+			SPIM0A_0_5,
+			SPIM0A_0_6,
+			SPIM0A_0_7,
+			SPIM2A_1_0,
+			SPIM2A_1_1,
+			SPIM2A_1_2,
+			SPIM2A_1_3,
+			SPIM2A_1_4,
+			SPIM2A_1_5,
+			SPIM2A_1_6,
+			SPIM2A_1_7,
+			SPIM2C_2_0,
+			SPIM2C_2_1,
+			SPIM2C_2_2,
+			SPIM2C_2_3,
+			SPIM2C_2_4,
+			SPIM2C_2_5,
+			SPIM2C_2_6,
+			SPIM2C_2_7;
 
 /***** Functions *****/
-void gpio_Init(void)
-{
-	for(int i=0; i<gpio_port_assign; i++)
-	{
-		for(int j=0; j<gpio_pin_assign; j++)
-			gpio_cfg_t gpio_masters[i][j];
-	}
-
-	for(int i=0; i<gpio_port_assign; i++)
-	{
-		for(int j=0; j<gpio_pin_assign; j++)
-			{
-			gpio_masters[i][j].port=gpio_port_assign[i];
-			gpio_masters[i][j].mask=gpio_pin_assign[j];
-			gpio_masters[i][j].func=GPIO_FUNC_GPIO;
-			gpio_masters[i][j].pad=GPIO_PAD_INPUT_PULLUP;
-			GPIO_Config(&gpio_masters[i][j]);
-			}
-	}
-}
-
 void pause(void)
 {
 	for(unsigned int i=0; i<5000000; i++)
@@ -106,10 +138,67 @@ void pause(void)
 }
 
 /******************************************************************************/
-void Setup()
+int Setup(error)
 {
 	LP_EnterLP3();
 	gpio_Init();
+
+	// Initialize the SPIM0A
+	    spim_cfg_t SPIM0A;
+	    SPIM0A.mode = 0;
+	    SPIM0A.ssel_pol = 4;
+	    SPIM0A.baud = SPI_BAUD;
+
+	    sys_cfg_spim_t sys_SPIM0A_cfg;
+
+	// Initialize the SPIM2A
+		spim_cfg_t SPIM2A;
+		SPIM2A.mode = 0;
+		SPIM2A.ssel_pol = 4;
+		SPIM2A.baud = SPI_BAUD;
+
+		sys_cfg_spim_t sys_SPIM2A_cfg;
+
+	// Initialize the SPIM2C
+		spim_cfg_t SPIM2C;
+		SPIM2C.mode = 0;
+		SPIM2C.ssel_pol = 4;
+		SPIM2C.baud = SPI_BAUD;
+
+		sys_cfg_spim_t sys_SPIM2C_cfg;
+
+	// SPIM0A IO Config                  core I/O, ss0, ss1, ss2, ss3, ss4, quad, fast I/O
+	    sys_SPIM0A_cfg.io_cfg = (ioman_cfg_t)IOMAN_SPIM0(1, 1, 1, 1, 1, 1, 0, 1);
+	    sys_SPIM0A_cfg.clk_scale = CLKMAN_SCALE_AUTO;
+
+		if((error = SPIM_Init(MXC_SPIM1, &SPIM0A, &sys_SPIM0A_cfg)) != E_NO_ERROR) {
+			printf("Error initializing SPIM %d\n", error);
+			while(1) {}
+		} else {
+			printf("SPIM0A Initialized\n");
+		}
+
+	// SPIM2A IO Config                  core I/O, ss0, ss1, ss2, ss3, ss4, quad, fast I/O
+		sys_SPIM2A_cfg.io_cfg = (ioman_cfg_t)IOMAN_SPIM0(1, 1, 1, 1, 1, 1, 0, 1);
+		sys_SPIM2A_cfg.clk_scale = CLKMAN_SCALE_AUTO;
+
+		if((error = SPIM_Init(MXC_SPIM1, &SPIM2A, &sys_SPIM2A_cfg)) != E_NO_ERROR) {
+			printf("Error initializing SPIM %d\n", error);
+			while(1) {}
+		} else {
+			printf("SPIM2A Initialized\n");
+		}
+
+	// SPIM2C IO Config                  core I/O, ss0, ss1, ss2, ss3, ss4, quad, fast I/O
+		sys_SPIM2C_cfg.io_cfg = (ioman_cfg_t)IOMAN_SPIM0(1, 1, 1, 1, 1, 1, 0, 1);
+		sys_SPIM2C_cfg.clk_scale = CLKMAN_SCALE_AUTO;
+
+		if((error = SPIM_Init(MXC_SPIM1, &SPIM2C, &sys_SPIM2C_cfg)) != E_NO_ERROR) {
+			printf("Error initializing SPIM %d\n", error);
+			while(1) {}
+		} else {
+			printf("SPIM2C Initialized\n");
+		}
 
 }
 
@@ -126,24 +215,11 @@ int main(void)
     }
     memset(rxdata, 0x0, BUFF_SIZE);
 
-    // Initialize the SPIM
-    spim_cfg_t cfg;
-    cfg.mode = 0;
-    cfg.ssel_pol = 0;
-    cfg.baud = SPI_BAUD;
 
-    sys_cfg_spim_t sys_cfg;
 
-    // SPIM IO Config                  core I/O, ss0, ss1, ss2, ss3, ss4, quad, fast I/O
-    sys_cfg.io_cfg = (ioman_cfg_t)IOMAN_SPIM0(1, 1, 1, 1, 1, 1, 0, 1);
-    sys_cfg.clk_scale = CLKMAN_SCALE_AUTO;
 
-    if((error = SPIM_Init(MXC_SPIM1, &cfg, &sys_cfg)) != E_NO_ERROR) {
-        printf("Error initializing SPIM %d\n", error);
-        while(1) {}
-    } else {
-        printf("SPIM Initialized\n");
-    }
+
+
 
     // Initialize the MX25
     MX25_init(MXC_SPIM1, 0);
